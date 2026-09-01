@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="midnight" data-font="jetbrains" data-caret="smooth-line">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypingFlow ⚡ Latihan Speed Typing Simpel & Kasual</title>
+    <meta name="description" content="Aplikasi latihan mengetik cepat (speed typing) modern, simpel, dan kasual berbahasa Indonesia dan Inggris dengan berbagai tingkat kesulitan kosa kata.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/typing.css">
+    <link rel="stylesheet" href="css/results.css">
+    <link rel="stylesheet" href="css/keyboard.css">
+</head>
+<body>
+
+    <div id="app-container">
+        <!-- Top Navbar -->
+        <header>
+            <div class="logo-group" id="btn-brand-restart">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-title">TypingFlow</span>
+                <span class="logo-tag">Casual</span>
+            </div>
+
+            <div class="top-actions">
+                <button class="icon-btn" id="btn-history" title="Riwayat & Statistik (Ctrl+H)">
+                    <span>📊</span>
+                    <span>Statistik</span>
+                </button>
+                <button class="icon-btn" id="btn-settings" title="Pengaturan & Tema">
+                    <span>⚙️</span>
+                    <span>Tema & Suara</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Configuration Bar (Monkeytype / 10FastFingers hybrid) -->
+        <div id="config-toolbar">
+            <!-- Language Selector -->
+            <div class="config-group" id="lang-group">
+                <button class="lang-btn active" data-lang="id">🇮🇩 Indonesia</button>
+                <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Level Selector -->
+            <div class="config-group" id="level-group">
+                <button class="level-btn active" data-level="level1" title="Kata Dasar Pendek">Mudah</button>
+                <button class="level-btn" data-level="level2" title="Kata Berimbuhan & Majemuk">Sedang</button>
+                <button class="level-btn" data-level="level3" title="Kosa Kata Baku, Tanda Baca & Angka">Mahir</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Mode Selector -->
+            <div class="config-group" id="mode-group">
+                <button class="mode-btn active" data-mode="time">⏱️ Waktu</button>
+                <button class="mode-btn" data-mode="words">📝 Kata</button>
+                <button class="mode-btn" data-mode="quote">💬 Kutipan</button>
+                <button class="mode-btn" data-mode="zen">🧘 Zen</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Sub Options (Time durations or Word counts) -->
+            <div class="config-group" id="sub-option-group">
+                <button class="sub-btn" data-val="15">15s</button>
+                <button class="sub-btn active" data-val="30">30s</button>
+                <button class="sub-btn" data-val="60">60s</button>
+                <button class="sub-btn" data-val="120">120s</button>
+            </div>
+        </div>
+
+        <!-- Main Typing Screen -->
+        <main id="typing-screen">
+            <!-- Live Indicator -->
+            <div id="live-header">
+                <div class="live-timer" id="live-timer">30</div>
+                <div class="live-stats">
+                    <div>WPM: <span id="live-wpm">0</span></div>
+                    <div>Akurasi: <span id="live-accuracy">100%</span></div>
+                </div>
+            </div>
+
+            <!-- Hidden Input for Focus & Mobile Support -->
+            <input type="text" id="hidden-input" autocomplete="off" autocapitalize="off" spellcheck="false">
+
+            <!-- Words Stream Stage -->
+            <div id="words-container-box">
+                <div id="words-wrapper">
+                    <div id="caret"></div>
+                    <div id="words-container"></div>
+                </div>
+            </div>
+
+            <!-- Typing Bottom Controls -->
+            <div class="typing-controls">
+                <button class="btn-restart-round" id="btn-reset" title="Ulangi Tes (Tab + Enter atau Esc)">
+                    🔄
+                </button>
+            </div>
+
+            <!-- Optional On-screen Visual Keyboard -->
+            <div id="virtual-keyboard" class="hidden">
+                <div class="kb-row">
+                    <div class="kb-key" data-key="q">Q</div>
+                    <div class="kb-key" data-key="w">W</div>
+                    <div class="kb-key" data-key="e">E</div>
+                    <div class="kb-key" data-key="r">R</div>
+                    <div class="kb-key" data-key="t">T</div>
+                    <div class="kb-key" data-key="y">Y</div>
+                    <div class="kb-key" data-key="u">U</div>
+                    <div class="kb-key" data-key="i">I</div>
+                    <div class="kb-key" data-key="o">O</div>
+                    <div class="kb-key" data-key="p">P</div>
+                </div>
+                <div class="kb-row">
+                    <div class="kb-key" data-key="a">A</div>
+                    <div class="kb-key" data-key="s">S</div>
+                    <div class="kb-key" data-key="d">D</div>
+                    <div class="kb-key" data-key="f">F</div>
+                    <div class="kb-key" data-key="g">G</div>
+                    <div class="kb-key" data-key="h">H</div>
+                    <div class="kb-key" data-key="j">J</div>
+                    <div class="kb-key" data-key="k">K</div>
+                    <div class="kb-key" data-key="l">L</div>
+                </div>
+                <div class="kb-row">
+                    <div class="kb-key" data-key="z">Z</div>
+                    <div class="kb-key" data-key="x">X</div>
+                    <div class="kb-key" data-key="c">C</div>
+                    <div class="kb-key" data-key="v">V</div>
+                    <div class="kb-key" data-key="b">B</div>
+                    <div class="kb-key" data-key="n">N</div>
+                    <div class="kb-key" data-key="m">M</div>
+                </div>
+                <div class="kb-row">
+                    <div class="kb-key key-space" data-key="space">SPACE</div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Results Screen (Hidden by default) -->
+        <section id="results-screen" class="hidden">
+            <div class="results-header-card">
+                <div class="res-test-type" id="res-test-type">Bahasa Indonesia • WAKTU 30s • Level 1</div>
+                <div class="pb-badge hidden" id="res-pb-badge">⭐ Rekor Baru (PB)!</div>
+            </div>
+
+            <div class="results-grid">
+                <!-- Left Metrics Column -->
+                <div class="metrics-column">
+                    <div class="primary-stat">
+                        <span class="stat-label">Kecepatan (WPM)</span>
+                        <span class="stat-value" id="res-wpm">0</span>
+                    </div>
+
+                    <div class="secondary-stats-grid">
+                        <div class="sub-stat">
+                            <span class="sub-label">Akurasi</span>
+                            <span class="sub-val" id="res-acc">100%</span>
+                        </div>
+                        <div class="sub-stat">
+                            <span class="sub-label">Raw WPM</span>
+                            <span class="sub-val" id="res-raw">0</span>
+                        </div>
+                        <div class="sub-stat">
+                            <span class="sub-label">Konsistensi</span>
+                            <span class="sub-val" id="res-consistency">100%</span>
+                        </div>
+                        <div class="sub-stat">
+                            <span class="sub-label">Waktu</span>
+                            <span class="sub-val" id="res-time">30s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Canvas Chart -->
+                <div class="chart-wrapper">
+                    <canvas id="performance-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Detailed Breakdown Row -->
+            <div class="details-row">
+                <div class="detail-item">
+                    <span class="detail-title">Karakter (Benar/Salah/Ekstra/Terlewat)</span>
+                    <span class="detail-data" id="res-chars">0 / 0 / 0 / 0</span>
+                </div>
+            </div>
+
+            <!-- Result Actions -->
+            <div class="results-actions">
+                <button class="btn-action-primary" id="btn-restart-result">
+                    <span>🔄</span>
+                    <span>Ulangi Tes</span>
+                </button>
+                <button class="btn-action-secondary" id="btn-copy-result">
+                    <span>📋</span>
+                    <span>Salin Hasil</span>
+                </button>
+                <button class="btn-action-secondary" id="btn-next-test">
+                    <span>➡️</span>
+                    <span>Tes Berikutnya</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="shortcut-hints">
+                <div class="key-hint"><kbd>Tab</kbd> + <kbd>Enter</kbd> / <kbd>Esc</kbd> <span>Restart Cepat</span></div>
+                <div class="key-hint"><kbd>Spasi</kbd> <span>Kata Berikutnya</span></div>
+                <div class="key-hint"><kbd>Backspace</kbd> <span>Koreksi Huruf</span></div>
+            </div>
+            <div class="footer-copy">
+                TypingFlow • Minimalist Speed Typing Trainer
+            </div>
+        </footer>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-backdrop" id="modal-settings">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2>⚙️ Pengaturan & Kustomisasi</h2>
+                <button class="btn-close-modal">✕</button>
+            </div>
+
+            <!-- Theme Choices -->
+            <div class="setting-section">
+                <label>🎨 Tema Tampilan</label>
+                <div class="theme-grid" id="theme-options-grid"></div>
+            </div>
+
+            <!-- Font Family -->
+            <div class="setting-section">
+                <label>🔤 Jenis Font</label>
+                <select class="custom-select" id="font-select">
+                    <option value="jetbrains">JetBrains Mono (Monospaced Modern)</option>
+                    <option value="fira">Fira Code (Monospaced Coding)</option>
+                    <option value="outfit">Outfit (Casual Modern Sans)</option>
+                    <option value="inter">Inter (Clean Typography)</option>
+                </select>
+            </div>
+
+            <!-- Caret Style -->
+            <div class="setting-section">
+                <label>📍 Gaya Kursor (Caret)</label>
+                <select class="custom-select" id="caret-select">
+                    <option value="smooth-line">Garis Halus (Smooth Line)</option>
+                    <option value="block">Balok (Block)</option>
+                    <option value="underline">Garis Bawah (Underline)</option>
+                    <option value="outline">Kotak Outline</option>
+                </select>
+            </div>
+
+            <!-- Sound Effects -->
+            <div class="setting-section">
+                <label>🔊 Suara Keyboard (Web Audio Synthesizer)</label>
+                <select class="custom-select" id="sound-select">
+                    <option value="cherry-blue">Cherry MX Blue (Clicky Renyah)</option>
+                    <option value="cherry-brown">Cherry MX Brown (Tactile Thock)</option>
+                    <option value="typewriter">Mesin Ketik Klasik (Typewriter)</option>
+                    <option value="bubble-pop">Bubble Pop (Lembut Santai)</option>
+                    <option value="mute">Mute (Hening / Tanpa Suara)</option>
+                </select>
+            </div>
+
+            <!-- Visual Keyboard Toggle -->
+            <div class="setting-section">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="checkbox" id="kb-toggle">
+                    <span>Tampilkan Keyboard Visual di Layar</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- History & Statistics Modal -->
+    <div class="modal-backdrop" id="modal-history">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2>📊 Riwayat & Statistik Latihan</h2>
+                <button class="btn-close-modal">✕</button>
+            </div>
+
+            <div class="history-stats-overview">
+                <div class="hist-card">
+                    <div class="val" id="stat-total-tests">0</div>
+                    <div class="lbl">Total Tes</div>
+                </div>
+                <div class="hist-card">
+                    <div class="val" id="stat-highest-wpm">0</div>
+                    <div class="lbl">WPM Tertinggi</div>
+                </div>
+                <div class="hist-card">
+                    <div class="val" id="stat-avg-wpm">0</div>
+                    <div class="lbl">Rata-rata WPM</div>
+                </div>
+                <div class="hist-card">
+                    <div class="val" id="stat-avg-acc">100%</div>
+                    <div class="lbl">Rata-rata Akurasi</div>
+                </div>
+            </div>
+
+            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.5rem; display: block;">Riwayat Tes Terakhir</label>
+            <div class="history-list" id="history-list"></div>
+
+            <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                <button class="btn-danger" id="btn-clear-history">Hapus Riwayat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast">✅ Hasil disalin ke clipboard!</div>
+
+    <!-- Application Script -->
+    <script src="js/bundle.js"></script>
+</body>
+</html>

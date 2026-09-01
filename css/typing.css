@@ -1,0 +1,158 @@
+/* ==========================================================================
+   TypingFlow - Word Container, Smooth Caret, and Letter Styling
+   ========================================================================== */
+
+#typing-screen {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+/* Words Container Box with Fixed 3-Line View */
+#words-container-box {
+    position: relative;
+    width: 100%;
+    height: 140px; /* Exactly fits 3 lines of 36px font */
+    overflow: hidden;
+    cursor: text;
+    margin: 1.5rem 0;
+}
+
+#words-wrapper {
+    position: relative;
+    width: 100%;
+    transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+#words-container {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 0 0.6em;
+    font-family: var(--font-mono);
+    font-size: 1.75rem;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    user-select: none;
+}
+
+/* Individual Word */
+.word {
+    display: inline-flex;
+    position: relative;
+    margin: 2px 0;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.15s ease;
+}
+
+.word.error {
+    border-bottom-color: var(--color-incorrect);
+}
+
+/* Individual Letters */
+.letter {
+    position: relative;
+    color: var(--color-untyped);
+    transition: color 0.08s ease;
+}
+
+/* PASTEL ORANGE TYPED LETTER */
+.letter.correct {
+    color: var(--color-correct) !important;
+    text-shadow: 0 0 1px rgba(255, 170, 94, 0.4);
+}
+
+.letter.incorrect {
+    color: var(--color-incorrect) !important;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.letter.extra {
+    color: var(--color-extra) !important;
+    opacity: 0.85;
+}
+
+/* --- Smooth Gliding Caret --- */
+#caret {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2.5px;
+    background-color: var(--accent);
+    border-radius: 2px;
+    box-shadow: 0 0 10px var(--accent-glow);
+    pointer-events: none;
+    transition: transform 0.09s cubic-bezier(0.1, 0.9, 0.2, 1), height 0.09s ease;
+    animation: caretBlink 1.1s infinite;
+    z-index: 10;
+}
+
+/* Pause blinking during active typing */
+body.is-typing #caret {
+    animation: none;
+    opacity: 1;
+}
+
+@keyframes caretBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Caret Variants */
+[data-caret="block"] #caret {
+    width: 0.6em;
+    opacity: 0.45;
+    border-radius: 2px;
+}
+
+[data-caret="underline"] #caret {
+    width: 0.6em;
+    height: 3px !important;
+    transform-origin: bottom;
+    align-self: flex-end;
+}
+
+[data-caret="outline"] #caret {
+    width: 0.6em;
+    background: transparent;
+    border: 2px solid var(--accent);
+    border-radius: 2px;
+}
+
+/* Restart Hint / Action in typing area */
+.typing-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.btn-restart-round {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    padding: 0.6rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-restart-round:hover {
+    color: var(--accent);
+    background: var(--bg-secondary);
+    transform: rotate(45deg);
+}
+
+.btn-restart-round:focus {
+    outline: none;
+}

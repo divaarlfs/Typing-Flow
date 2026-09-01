@@ -1,0 +1,60 @@
+/* ==========================================================================
+   TypingFlow - On-Screen Visual Keyboard Guide
+   ========================================================================== */
+
+#virtual-keyboard {
+    margin: 1.5rem auto 0 auto;
+    max-width: 680px;
+    width: 100%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    box-shadow: var(--shadow-soft);
+    transition: opacity 0.25s ease;
+}
+
+.kb-row {
+    display: flex;
+    justify-content: center;
+    gap: 0.35rem;
+}
+
+.kb-key {
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    height: 34px;
+    min-width: 32px;
+    padding: 0 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    transition: all 0.08s ease;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.kb-key.key-wide {
+    min-width: 50px;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.kb-key.key-space {
+    width: 200px;
+}
+
+.kb-key.pressed {
+    background: var(--accent);
+    color: var(--accent-contrast);
+    transform: translateY(2px);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    border-color: var(--accent);
+}
